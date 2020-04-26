@@ -54,7 +54,7 @@ def token_required(f):
     return decorated_function
 
 
-@app.route('/add_note', methods=['POST'])
+@app.route('/add_note', methods=['POST','GET'])
 @token_required
 def add_note():
     try:
@@ -72,7 +72,7 @@ def add_note():
         return 'Failed in adding task', 500
 
 
-@app.route('/add_task', methods=['POST'])
+@app.route('/add_task', methods=['POST','GET'])
 @token_required
 def add_task():
     try:
@@ -82,7 +82,7 @@ def add_task():
         row = collection.add_row()
         row.name = request.json['title']
         row.addedby = request.json['addedby']
-        
+
         return 'Succeceed in adding task', 200
     except Exception:
         return 'Failed in adding task', 500
