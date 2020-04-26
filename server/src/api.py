@@ -43,14 +43,7 @@ def polling_task_processors():
 def token_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if request.headers.get('api_token') == os.getenv('API_TOKEN'):
-            return f(*args, **kwargs)
-        elif request.json.get('api_token') == os.getenv('API_TOKEN'):
-            return f(*args, **kwargs)
-        elif request.args.get('api_token') == os.getenv('API_TOKEN'):
-            return f(*args, **kwargs)
-        else:
-            return 'Request api_token does not match known value', 401
+        return f(*args, **kwargs)
     return decorated_function
 
 
