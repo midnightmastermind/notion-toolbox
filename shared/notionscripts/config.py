@@ -28,3 +28,7 @@ class Config():
     @cached(cache={})
     def imported_tag_url(self):
         return os.environ.get('IMPORTED_TAG_URL')
+
+    @cached(cache={})
+    def articles_database_url(self):
+        return os.environ.get('ARTICLES_DATABASE_URL')

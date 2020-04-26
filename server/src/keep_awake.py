@@ -4,4 +4,4 @@ import requests
 
 
 def ping():
-    requests.get('https://notion-server.herokuapp.com/')
+    requests.get('https://to-notioso.herokuapp.com/')

@@ -7,6 +7,7 @@ from datetime import datetime
 from notionscripts.notion_api import NotionApi
 from utils import app_url
 from polling_task_processors import PollingTaskProcessors
+from notion.block import BasicBlock
 
 from flask import Flask, request, jsonify
 from flask_apscheduler import APScheduler
@@ -59,11 +60,16 @@ def add_note():
     try:
         notion_api = NotionApi()
 
-        notion_api.append_to_current_day_notes(request.json['title'])
+        collection = notion_api.articles_database().collection
 
-        return 'Succeceed in adding note', 200
+        row = collection.add_row()
+        row.name = request.json['title']
+        row.url = request.json['url']
+        row.addedby = request.json['addedby']
+
+        return 'Succeceed in adding task', 200
     except Exception:
-        return 'Failed in adding note', 500
+        return 'Failed in adding task', 500
 
 
 @app.route('/add_task', methods=['POST'])
@@ -73,12 +79,10 @@ def add_task():
         notion_api = NotionApi()
 
         collection = notion_api.tasks_database().collection
-
         row = collection.add_row()
         row.name = request.json['title']
-        row.status = 'Next Up'
-        row.tags = [notion_api.config.imported_tag_url()]
-
+        row.addedby = request.json['addedby']
+        
         return 'Succeceed in adding task', 200
     except Exception:
         return 'Failed in adding task', 500

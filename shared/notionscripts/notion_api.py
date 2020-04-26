@@ -18,6 +18,10 @@ class NotionApi():
         return NotionClient(token_v2=self.config.notion_token(), monitor=False)
 
     @cached(cache={})
+    def articles_database(self):
+        return self.client().get_collection_view(self.config.articles_database_url())
+
+    @cached(cache={})
     def tags_database(self):
         return self.client().get_collection_view(self.config.tags_database_url())
 
