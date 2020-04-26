@@ -25,25 +25,4 @@ class PollingTaskProcessors():
         TrackTransitionProcessor(self.notion_api, task).run()
 
     def _build_task_query(self):
-        filter_params = {
-            "filters": [
-                {
-                    "filter": {
-                        "value": {
-                            "type": "relative",
-                            "value": "today"
-                        },
-                        "operator": "date_is"
-                    },
-                    "property": "completed_on"
-                },
-                {
-                    "filter": {
-                        "operator": "is_empty"
-                    },
-                    "property": "completed_on"
-                }
-            ],
-            "operator": "or"
-        }
-        return self.notion_api.tasks_database().build_query(filter=filter_params)
+        return self.notion_api.tasks_database().build_query()

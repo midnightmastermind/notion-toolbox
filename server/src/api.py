@@ -7,7 +7,6 @@ from datetime import datetime
 from notionscripts.notion_api import NotionApi
 from utils import app_url
 from polling_task_processors import PollingTaskProcessors
-from notion.block import BasicBlock
 
 from flask import Flask, request, jsonify
 from flask_apscheduler import APScheduler
@@ -43,11 +42,18 @@ def polling_task_processors():
 def token_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        return f(*args, **kwargs)
+        if request.headers.get('api_token') == os.getenv('API_TOKEN'):
+            return f(*args, **kwargs)
+        elif request.json.get('api_token') == os.getenv('API_TOKEN'):
+            return f(*args, **kwargs)
+        elif request.args.get('api_token') == os.getenv('API_TOKEN'):
+            return f(*args, **kwargs)
+        else:
+            return 'Request api_token does not match known value', 401
     return decorated_function
 
 
-@app.route('/add_note', methods=['POST','GET'])
+@app.route('/add_note', methods=['POST'])
 @token_required
 def add_note():
     try:
@@ -57,28 +63,25 @@ def add_note():
 
         row = collection.add_row()
         row.name = request.json['title']
-        row.url = request.json['url']
-        row.addedby = request.json['addedby']
 
-        return 'Succeceed in adding task', 200
+        return 'Succeceed in adding note', 200
     except Exception:
-        return 'Failed in adding task', 500
+        return 'Failed in adding note', 500
 
 
-@app.route('/add_task', methods=['POST','GET'])
+@app.route('/add_task', methods=['POST'])
 @token_required
 def add_task():
     try:
         notion_api = NotionApi()
 
         collection = notion_api.tasks_database().collection
+
         row = collection.add_row()
         row.name = request.json['title']
-        row.addedby = request.json['addedby']
 
         return 'Succeceed in adding task', 200
     except Exception:
-        return request, 500
         return 'Failed in adding task', 500
 
 
