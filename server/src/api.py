@@ -61,14 +61,14 @@ def add_note():
         row.addedby = request.json['addedby']
 
         return 'Succeceed in adding task', 200
-    except Exception as inst:
-        return inst, 500
+    except Exception:
         return 'Failed in adding task', 500
 
 
 @app.route('/add_task', methods=['POST','GET'])
 @token_required
 def add_task():
+    try:
         notion_api = NotionApi()
 
         collection = notion_api.tasks_database().collection
@@ -77,6 +77,8 @@ def add_task():
         row.addedby = request.json['addedby']
 
         return 'Succeceed in adding task', 200
+    except Exception:
+        return 'Failed in adding task', 500
 
 
 @app.route('/current_tasks.json', methods=['GET'])
