@@ -78,6 +78,7 @@ def add_task():
 
         return 'Succeceed in adding task', 200
     except Exception:
+        return 'Hello', 500
         return 'Failed in adding task', 500
 
 
