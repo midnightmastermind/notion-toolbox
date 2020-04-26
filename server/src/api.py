@@ -61,8 +61,8 @@ def add_note():
         row.addedby = request.json['addedby']
 
         return 'Succeceed in adding task', 200
-    except Exception:
-        return Exception, 500
+    except Exception as inst:
+        return inst, 500
         return 'Failed in adding task', 500
 
 
@@ -78,7 +78,8 @@ def add_task():
         row.addedby = request.json['addedby']
 
         return 'Succeceed in adding task', 200
-    except Exception:
+    except Exception as inst:
+        return inst, 500
         return 'Failed in adding task', 500
 
 
