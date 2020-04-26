@@ -62,6 +62,7 @@ def add_note():
 
         return 'Succeceed in adding task', 200
     except Exception:
+        return Exception, 500
         return 'Failed in adding task', 500
 
 
