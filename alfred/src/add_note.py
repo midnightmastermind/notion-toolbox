@@ -13,7 +13,7 @@ try:
 
     query = ' '.join(args.query)
 
-    print(notion_api.append_to_current_day_notes(query).title)
+    print(notion_api.add_note(query).title)
 except Exception as e:
     # Print out nothing on STDOUT (missing value means means operation was unsuccessful)
     sys.stderr.write(e)

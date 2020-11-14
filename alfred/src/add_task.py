@@ -12,8 +12,6 @@ try:
     collection = notion_api.tasks_database().collection
 
     parser = argparse.ArgumentParser(description='Add task')
-    parser.add_argument('--status', nargs='*', help='status')
-    parser.add_argument('--tags', nargs='*', help='tags (CSV-style)')
     parser.add_argument('--query', nargs=argparse.REMAINDER, help='query')
     args = parser.parse_args(sys.argv[1].split())
 
@@ -22,7 +20,6 @@ try:
 
     row = collection.add_row()
     row.name = query
-    row.status = status
 
     if args.tags:
         tags = ' '.join(args.tags).split(',')
